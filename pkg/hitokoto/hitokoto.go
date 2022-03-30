@@ -63,4 +63,5 @@ func (h *Hitokoto) saveToRedis() {
 	key := fmt.Sprintf("%s:%s:%d", redisPrefix, h.Type, h.ID)
 	str, _ := json.Marshal(h)
 	rdb.Set(context.Background(), key, string(str), 0)
+
 }
