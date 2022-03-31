@@ -9,6 +9,7 @@ import (
 
 	"github.com/go-redis/redis/v8"
 	"github.com/gookit/goutil/dump"
+	"github.com/itachilee/furion/models"
 	"github.com/itachilee/furion/pkg/cache"
 )
 
@@ -31,8 +32,9 @@ type Hitokoto struct {
 	Length     int    `json:"length"`
 }
 
-func HttpGet(url string) (err error) {
-	resp, err := http.Get(url)
+func GetByApi() (err error) {
+
+	resp, err := http.Get(GlobalUrl)
 	if err != nil {
 		dump.P("get request failed, err:[%s]", err.Error())
 		return
@@ -48,6 +50,7 @@ func HttpGet(url string) (err error) {
 	}
 	dump.P(hitokoto)
 	hitokoto.saveToRedis()
+	hitokoto.saveToMysql()
 	return
 }
 
@@ -63,5 +66,24 @@ func (h *Hitokoto) saveToRedis() {
 	key := fmt.Sprintf("%s:%s:%d", redisPrefix, h.Type, h.ID)
 	str, _ := json.Marshal(h)
 	rdb.Set(context.Background(), key, string(str), 0)
+
+}
+
+func (h *Hitokoto) saveToMysql() {
+	hitokoto := map[string]interface{}{
+		"ID":         h.ID,
+		"UUID":       h.UUID,
+		"Hitokoto":   h.Hitokoto,
+		"Type":       h.Type,
+		"From":       h.From,
+		"FromWho":    h.FromWho,
+		"Creator":    h.Creator,
+		"CreatorUID": h.CreatorUID,
+		"Reviewer":   h.Reviewer,
+		"CommitFrom": h.CommitFrom,
+		"CreatedAt":  h.CreatedAt,
+		"Length":     h.Length,
+	}
+	models.AddHitokoto(hitokoto)
 
 }
