@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/itachilee/furion/models"
+	"github.com/itachilee/furion/pkg/gushici"
 	"github.com/itachilee/furion/pkg/hitokoto"
 	"github.com/itachilee/furion/pkg/setting"
 	v1 "github.com/itachilee/furion/routers/api/v1"
@@ -58,8 +59,9 @@ func main() {
 		})
 	})
 	r.GET("/hitokotos", v1.GetHitokotos)
-	go hitokoto.CronRunBark()
+	go hitokoto.CronRun()
 
 	r.Run(":8084")
 
+	gushici.GetGushici()
 }

@@ -3,7 +3,9 @@ package setting
 import (
 	"time"
 
+	"github.com/go-redis/redis/v8"
 	"github.com/gookit/goutil/dump"
+	"github.com/itachilee/furion/pkg/cache"
 	"github.com/spf13/viper"
 )
 
@@ -45,6 +47,15 @@ type App struct {
 }
 
 var AppCinfig = new(App)
+
+type Redis struct {
+	Host     string
+	Password string
+
+	IdleTimeout time.Duration
+}
+
+var RedisCinfig = new(Redis)
 
 // 初始化配置项
 func Setup(path string) {
@@ -106,4 +117,22 @@ func Setup(path string) {
 	}
 
 	dump.P(AppCinfig)
+
+	cfgRedis := viper.Sub("redis")
+
+	RedisCinfig = &Redis{
+		Host:     cfgRedis.GetString("Host"),
+		Password: cfgRedis.GetString("Password"),
+
+		IdleTimeout: cfgRedis.GetDuration("IdleTimeout"),
+	}
+
+	_, err = cache.SetupRedis(&redis.Options{
+		Addr:        RedisCinfig.Host,
+		Password:    RedisCinfig.Password,
+		IdleTimeout: RedisCinfig.IdleTimeout,
+	})
+	if err != nil {
+		panic(err)
+	}
 }

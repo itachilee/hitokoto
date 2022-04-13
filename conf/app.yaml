@@ -35,8 +35,6 @@ database:
   TablePrefix: blog_
 
 redis:
-  Host: 127.0.0.1:6379
-  Password:
-  MaxIdle: 30
-  MaxActive: 30
+  Host: localhost:6380
+  Password: 3sqrcizt
   IdleTimeout: 200

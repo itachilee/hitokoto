@@ -7,9 +7,9 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/go-redis/redis/v8"
 	"github.com/gookit/goutil/dump"
 	"github.com/itachilee/furion/models"
+	"github.com/itachilee/furion/pkg/bark"
 	"github.com/itachilee/furion/pkg/cache"
 )
 
@@ -51,21 +51,24 @@ func GetByApi() (err error) {
 	dump.P(hitokoto)
 	hitokoto.saveToRedis()
 	hitokoto.saveToMysql()
+	hitokoto.PushToBark()
 	return
 }
 
-func (h *Hitokoto) saveToRedis() {
-	rdb, err := cache.NewRedis(&redis.Options{
-		Addr:     "localhost:6380",
-		DB:       0,
-		Password: "123456",
-	})
-	if err != nil {
-		panic(err)
+func (h *Hitokoto) PushToBark() {
+
+	msg := &bark.BarkMessage{
+		Title: h.From,
+		Body:  h.Hitokoto,
 	}
+	bark.PushToBark(msg)
+}
+
+func (h *Hitokoto) saveToRedis() {
+
 	key := fmt.Sprintf("%s:%s:%d", redisPrefix, h.Type, h.ID)
 	str, _ := json.Marshal(h)
-	rdb.Set(context.Background(), key, string(str), 0)
+	cache.Rdb.Set(context.Background(), key, string(str), 0)
 
 }
 
