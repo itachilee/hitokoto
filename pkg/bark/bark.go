@@ -2,11 +2,18 @@ package bark
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/go-redis/redis/v8"
+	"github.com/gookit/goutil/dump"
+	"github.com/itachilee/furion/pkg/cache"
 )
+
+var ctx = context.Background()
 
 type BarkMessage struct {
 	Title string `json:"title"`
@@ -24,4 +31,16 @@ func PushToBark(msg *BarkMessage) {
 	body, _ := ioutil.ReadAll(resp.Body)
 	fmt.Println(string(body))
 
+}
+
+func CanPushToBark() bool {
+	_, err := cache.Rdb.Get(ctx, RedisBarkExPrefix).Result()
+	if err == redis.Nil {
+		return true
+	} else if err != nil {
+		dump.V(err)
+		return false
+	} else {
+		return false
+	}
 }

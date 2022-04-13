@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"time"
 
 	"github.com/gookit/goutil/dump"
 	"github.com/itachilee/furion/models"
@@ -16,6 +17,8 @@ import (
 const (
 	redisPrefix = "hitokoto"
 )
+
+var ctx = context.Background()
 
 type Hitokoto struct {
 	ID         int    `json:"id"`
@@ -56,12 +59,19 @@ func GetByApi() (err error) {
 }
 
 func (h *Hitokoto) PushToBark() {
-
-	msg := &bark.BarkMessage{
-		Title: h.From,
-		Body:  h.Hitokoto,
+	// random := util.CreateCaptcha()
+	// randomInt, _ := strconv.Atoi(random)
+	// if randomInt%2 == 0 {
+	isExt := bark.CanPushToBark()
+	if isExt {
+		msg := &bark.BarkMessage{
+			Title: h.From,
+			Body:  h.Hitokoto,
+		}
+		bark.PushToBark(msg)
+		cache.Rdb.SetEX(ctx, bark.RedisBarkExPrefix, 1, 30*time.Minute)
 	}
-	bark.PushToBark(msg)
+
 }
 
 func (h *Hitokoto) saveToRedis() {
