@@ -46,6 +46,7 @@ type App struct {
 
 var AppCinfig = new(App)
 
+// 初始化配置项
 func Setup(path string) {
 	viper := viper.New()
 

@@ -1,60 +1,65 @@
 package main
 
 import (
-	"log"
-	"math/rand"
-	"os"
+	"context"
+	"fmt"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-echarts/go-echarts/charts"
+	"github.com/google/uuid"
 	"github.com/itachilee/furion/models"
 	"github.com/itachilee/furion/pkg/hitokoto"
 	"github.com/itachilee/furion/pkg/setting"
 	v1 "github.com/itachilee/furion/routers/api/v1"
 )
 
-var nameItems = []string{"衬衫", "牛仔裤", "运动裤", "袜子", "冲锋衣", "羊毛衫"}
-var seed = rand.NewSource(time.Now().UnixNano())
+const (
+	KEY Request = "trace_id"
+)
 
-func handler(c *gin.Context) {
-	bar := charts.NewBar()
-	bar.SetGlobalOptions(charts.TitleOpts{Title: "Bar-示例图"}, charts.ToolboxOpts{Show: true})
-	bar.AddXAxis(nameItems).
-		AddYAxis("商家A", randInt()).
-		AddYAxis("商家B", randInt())
-	f, err := os.Create("bar.html")
-	if err != nil {
-		log.Println(err)
-	}
-	bar.Render(c.Writer, f) // Render 可接收多个 io.Writer 接口
+type Request string
+
+func NewRequestID() Request {
+	requestId := strings.Replace(uuid.New().String(), "-", "", -1)
+	return Request(requestId)
 }
 
-func randInt() []int {
-	cnt := len(nameItems)
-	r := make([]int, 0)
-	for i := 0; i < cnt; i++ {
-		r = append(r, int(seed.Int63())%50)
-	}
-	return r
+func NewContextWithTraceID() context.Context {
+	ctx := context.WithValue(context.Background(), KEY, NewRequestID())
+	return ctx
 }
 
+func PrintLog(ctx context.Context, message string) {
+	fmt.Printf("%s|info|trace_id=%s|%s", time.Now().Format("2006-01-02 15:04:05"), GetContextValue(ctx, KEY), message)
+}
+
+func GetContextValue(ctx context.Context, k Request) string {
+	v, ok := ctx.Value(k).(string)
+	if !ok {
+		return ""
+	}
+	return v
+}
+
+func ProcessEnter(ctx context.Context) {
+	PrintLog(ctx, "dream worker")
+}
 func main() {
+
+	// ProcessEnter(NewContextWithTraceID())
 
 	setting.Setup("./conf")
 	models.Setup()
-	// http.HandleFunc("/", handler)
-	// http.ListenAndServe(":8081", nil)
-
 	r := gin.Default()
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",
 		})
 	})
-	r.GET("/", handler)
 	r.GET("/hitokotos", v1.GetHitokotos)
-	go hitokoto.CronRun()
+	go hitokoto.CronRunBark()
 
-	r.Run(":8081")
+	r.Run(":8084")
+
 }
