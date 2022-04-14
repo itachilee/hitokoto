@@ -37,7 +37,7 @@ func Setup() {
 		return setting.DatabaseConfig.TablePrefix + defaultTableName
 	}
 	db.SingularTable(true)
-	db.AutoMigrate(&Channel{}, &User{}, &Message{}, &Gushici{})
+	db.AutoMigrate(&Gushici{})
 	db.Callback().Create().Replace("gorm:update_time_stamp", updateTimeStampForCreateCallback)
 	db.Callback().Update().Replace("gorm:update_time_stamp", updateTimeStampForUpdateCallback)
 	db.Callback().Delete().Replace("gorm:delete", deleteCallback)
