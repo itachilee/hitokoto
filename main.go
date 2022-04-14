@@ -6,13 +6,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/itachilee/furion/models"
 	"github.com/itachilee/furion/pkg/gushici"
 	"github.com/itachilee/furion/pkg/hitokoto"
 	"github.com/itachilee/furion/pkg/setting"
-	v1 "github.com/itachilee/furion/routers/api/v1"
+	"github.com/itachilee/furion/routers"
 )
 
 const (
@@ -46,19 +45,18 @@ func GetContextValue(ctx context.Context, k Request) string {
 func ProcessEnter(ctx context.Context) {
 	PrintLog(ctx, "dream worker")
 }
+
+func init() {
+	setting.Setup("./conf")
+	models.Setup()
+}
+
 func main() {
 
 	// ProcessEnter(NewContextWithTraceID())
 
-	setting.Setup("./conf")
-	models.Setup()
-	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-	r.GET("/hitokotos", v1.GetHitokotos)
+	r := routers.InitRouter()
+
 	go hitokoto.CronRun()
 
 	r.Run(":8084")

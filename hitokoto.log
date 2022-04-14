@@ -1,0 +1,65 @@
+[0;35mPRINT AT github.com/itachilee/furion/pkg/setting.Setup(setting.go:81)[0m
+&[0;32msetting.Server[0m {
+  [0;32mRunMode[0m: string("[0;32mdebug[0m"), [0;90m#len=5[0m
+  [0;32mHttpPort[0m: int([0;94m8081[0m),
+  [0;32mReadTimeout[0m: time.Duration([0;94m60[0m),
+  [0;32mWriteTimeout[0m: time.Duration([0;94m60[0m),
+},
+[0;35mPRINT AT github.com/itachilee/furion/pkg/setting.Setup(setting.go:94)[0m
+&[0;32msetting.Database[0m {
+  [0;32mType[0m: string("[0;32mmysql[0m"), [0;90m#len=5[0m
+  [0;32mUser[0m: string("[0;32mroot[0m"), [0;90m#len=4[0m
+  [0;32mPassword[0m: string("[0;32m3sqrcizt[0m"), [0;90m#len=8[0m
+  [0;32mHost[0m: string("[0;32mlocalhost:3307[0m"), [0;90m#len=14[0m
+  [0;32mName[0m: string("[0;32mblog[0m"), [0;90m#len=4[0m
+  [0;32mTablePrefix[0m: string("[0;32mblog_[0m"), [0;90m#len=5[0m
+},
+[0;35mPRINT AT github.com/itachilee/furion/pkg/setting.Setup(setting.go:119)[0m
+&[0;32msetting.App[0m {
+  [0;32mQrCodeSavePath[0m: string("[0;32mqrcode/[0m"), [0;90m#len=7[0m
+  [0;32mRuntimeRootPath[0m: string("[0;32mruntime/[0m"), [0;90m#len=8[0m
+  [0;32mImageMaxSize[0m: int([0;94m5[0m),
+  [0;32mTimeFormat[0m: int([0;94m20060102[0m),
+  [0;32mImageSavePath[0m: string("[0;32mupload/images/[0m"), [0;90m#len=14[0m
+  [0;32mLogFileExt[0m: string("[0;32mlog[0m"), [0;90m#len=3[0m
+  [0;32mExportSavePath[0m: string("[0;32mexport/[0m"), [0;90m#len=7[0m
+  [0;32mLogSaveName[0m: string("[0;32mlog[0m"), [0;90m#len=3[0m
+  [0;32mPrefixUrl[0m: string("[0;32mhttp://127.0.0.1:8081[0m"), [0;90m#len=21[0m
+  [0;32mImageAllowExts[0m: string("[0;32m.jpg,.jpeg,.png[0m"), [0;90m#len=15[0m
+  [0;32mFontSavePath[0m: string("[0;32mfonts/[0m"), [0;90m#len=6[0m
+  [0;32mLogSavePath[0m: string("[0;32mlogs/[0m"), [0;90m#len=5[0m
+  [0;32mPageSize[0m: int([0;94m10[0m),
+  [0;32mJwtSecret[0m: int([0;94m233[0m),
+},
+
+[33m[2022-04-13 17:39:57][0m [35m[info] replacing callback `gorm:update_time_stamp` from /home/vscode/desktop/models/models.go:41[0m [31;1m [0m
+
+[33m[2022-04-13 17:39:57][0m [35m[info] replacing callback `gorm:update_time_stamp` from /home/vscode/desktop/models/models.go:42[0m [31;1m [0m
+
+[33m[2022-04-13 17:39:57][0m [35m[info] replacing callback `gorm:delete` from /home/vscode/desktop/models/models.go:43[0m [31;1m [0m
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /ping                     --> main.main.func1 (3 handlers)
+[GIN-debug] GET    /hitokotos                --> github.com/itachilee/furion/routers/api/v1.GetHitokotos (3 handlers)
+[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+[GIN-debug] Listening and serving HTTP on :8084
+[0;35mPRINT AT github.com/itachilee/furion/pkg/hitokoto.GetByApi(hitokoto.go:54)[0m
+&[0;32mhitokoto.Hitokoto[0m {
+  [0;32mID[0m: int([0;94m6079[0m),
+  [0;32mUUID[0m: string("[0;32mfb040842-889b-4a9c-85f8-ba8b8d4a0531[0m"), [0;90m#len=36[0m
+  [0;32mHitokoto[0m: string("[0;32m没有了对高处的恐惧，就体会不到高处之美。[0m"), [0;90m#len=60[0m
+  [0;32mType[0m: string("[0;32md[0m"), [0;90m#len=1[0m
+  [0;32mFrom[0m: string("[0;32m三体II·黑暗森林[0m"), [0;90m#len=22[0m
+  [0;32mFromWho[0m: string("[0;32m刘慈欣[0m"), [0;90m#len=9[0m
+  [0;32mCreator[0m: string("[0;32m希铁石[0m"), [0;90m#len=9[0m
+  [0;32mCreatorUID[0m: int([0;94m5496[0m),
+  [0;32mReviewer[0m: int([0;94m1044[0m),
+  [0;32mCommitFrom[0m: string("[0;32mweb[0m"), [0;90m#len=3[0m
+  [0;32mCreatedAt[0m: string("[0;32m1588064194[0m"), [0;90m#len=10[0m
+  [0;32mLength[0m: int([0;94m20[0m),
+},

@@ -23,7 +23,10 @@ type BarkMessage struct {
 // push msg to bark server
 func PushToBark(msg *BarkMessage) {
 	b, _ := json.Marshal(msg)
-	resp, _ := http.Post(BarkPushUrl, "application/json", bytes.NewBuffer(b))
+	resp, err := http.Post(BarkPushUrl, "application/json", bytes.NewBuffer(b))
+	if err != nil {
+		dump.P(err)
+	}
 	//
 	defer resp.Body.Close()
 	//io.Reader
