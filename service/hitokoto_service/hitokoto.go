@@ -53,7 +53,7 @@ func (h *Hitokoto) Add() error {
 
 	return nil
 }
-func (a *Hitokoto) Count() (int, error) {
+func (a *Hitokoto) Count() (int64, error) {
 	return models.GetHitokotoTotal(a.getMaps())
 }
 

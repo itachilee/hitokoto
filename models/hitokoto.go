@@ -1,6 +1,6 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import "gorm.io/gorm"
 
 type Hitokoto struct {
 	ID         int    `json:"id"`
@@ -28,8 +28,8 @@ func GetHitokotos(pageNum int, pageSize int, maps interface{}) ([]*Hitokoto, err
 }
 
 // GetArticleTotal gets the total number of articles based on the constraints
-func GetHitokotoTotal(maps interface{}) (int, error) {
-	var count int
+func GetHitokotoTotal(maps interface{}) (int64, error) {
+	var count int64
 	if err := db.Model(&Hitokoto{}).Where(maps).Count(&count).Error; err != nil {
 		return 0, err
 	}

@@ -1,6 +1,6 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import "gorm.io/gorm"
 
 type Gushici struct {
 	gorm.Model
@@ -20,8 +20,8 @@ func GetGushicis(pageNum int, pageSize int, maps interface{}) ([]*Gushici, error
 	return gushicis, nil
 }
 
-func GetGushiciTotal(maps interface{}) (int, error) {
-	var count int
+func GetGushiciTotal(maps interface{}) (int64, error) {
+	var count int64
 	if err := db.Model(&Gushici{}).Where(maps).Count(&count).Error; err != nil {
 		return 0, err
 	}
