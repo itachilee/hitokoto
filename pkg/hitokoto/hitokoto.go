@@ -53,7 +53,7 @@ func GetByApi() (err error) {
 	}
 	dump.P(hitokoto)
 	hitokoto.saveToRedis()
-	hitokoto.saveToMysql()
+	// hitokoto.saveToMysql()
 	hitokoto.PushToBark()
 	return
 }
